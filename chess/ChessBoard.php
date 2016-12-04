@@ -87,7 +87,7 @@ class ChessBoard {
 		return false;
 	}
 
-	public function move($from, $to) {
+	public function move($from, $to, $botMove=False) {
 		if(!is_numeric($from[0]) || !is_numeric($from[1]) || !is_numeric($to[0]) || !is_numeric($to[1])) {
 			file_put_contents("err.txt", "invalid input: " . json_encode($from) . "|" . json_encode($to));
 			die();
@@ -104,6 +104,9 @@ class ChessBoard {
 			if($target) {
 				$this->deletePiece($to[1], $to[0]);
 			}
+		}
+		if (!$botMove) {
+			ChessBot::init($this, $to);
 		}
 	}
 
