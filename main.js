@@ -15,11 +15,11 @@ function movePieces(pieces) {
         return (css.match(/pc-\w+/g) || []).join(' ');
       });
 
-      if (pieces[7 - j][7 - i] === 'x') {
+      if (pieces[j][i] === 'x') {
         continue;
       }
 
-      $tile.addClass(`pc-${pieces[7 - j][7 - i]}`);
+      $tile.addClass(`pc-${pieces[j][i]}`);
     }
   }
 }

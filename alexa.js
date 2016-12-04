@@ -86,6 +86,16 @@ function move(intent, callback) {
         return callback(buildSpeechletResponse(intent.name, 'I did not understand this notation.', '', false));
     }
 
+    if (
+        ! slots.Piece.value.match(/^(queen|king|rook|bishop|knight|pawn)$/)
+        || ! slots.FileOne.value.match(/^(alfa|beta|charlie|delta|echo|foxtrot|golf|hotel)$/)
+        || ! slots.FileTwo.value.match(/^(alfa|beta|charlie|delta|echo|foxtrot|golf|hotel)$/)
+        || ! slots.RankOne.value.match(/^[12345678]$/)
+        || ! slots.RankTwo.value.match(/^[12345678]$/)
+    ) {
+        return callback(buildSpeechletResponse(intent.name, 'I did not understand this notation.', '', false));
+    }
+
     const data = {
         piece: slots.Piece.value.substr(0, 1),
         from: [
@@ -116,7 +126,7 @@ exports.handler = (event, context, callback) => {
         });
     }   
 
-    if (event.request.type === 'IntentRequest') {
+    if (event.request.type === 'IntentRequest' && event.request.intent.name == 'Move') {
         move(event.request.intent, (speechletResponse) => {
             callback(null, buildResponse({}, speechletResponse));
         });
