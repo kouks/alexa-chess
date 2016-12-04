@@ -1,7 +1,7 @@
 'use strict';
 
 setInterval(() => {
-  $.get('http://game.timbotek.com/chess', (data) => {
+  $.get('http://chess.pavelkoch.me/chess', (data) => {
     movePieces(JSON.parse(data));
   });
 }, 1500);
