@@ -114,16 +114,8 @@ exports.handler = (event, context, callback) => {
     }   
 
     if (event.request.type === 'IntentRequest') {
-        if (event.request.intent.name == "Move") {
-            move(event.request.intent, (speechletResponse) => {
-                callback(null, buildResponse({}, speechletResponse));
-            });
-        }
-
-        // if (event.request.intent.name == "Newgame") {
-        //     welcome((speechletResponse) => {
-        //         callback(null, buildResponse({}, speechletResponse));
-        //     });
-        // }
+        move(event.request.intent, (speechletResponse) => {
+            callback(null, buildResponse({}, speechletResponse));
+        });
     }
 };
