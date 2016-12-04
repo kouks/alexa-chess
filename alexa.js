@@ -72,8 +72,9 @@ function move(intent, callback) {
         1: 0, 2: 1, 3: 2, 4: 3, 5: 4, 6: 5, 7: 6, 8: 7,
     };
 
-    const speechOutput = 'Excellent move! Moving your ' + intent.slots.Piece.value + ' to ' + intent.slots.FileTwo.value.substr(0, 1) + intent.slots.RankTwo.value + ' now';
+    const speechOutput = 'Excellent move! Moving your ' + intent.slots.Piece.value + ' to ' + intent.slots.FileTwo.value.substr(0, 1) + intent.slots.RankTwo.value + ' now.';
     const slots = intent.slots;
+
 
     if (
         slots.Piece.value === undefined
@@ -84,22 +85,24 @@ function move(intent, callback) {
     ) {
         return callback(buildSpeechletResponse(intent.name, 'I did not understand this notation.', '', false));
     }
-    
+
     const data = {
         piece: slots.Piece.value.substr(0, 1),
         from: [
-            fieldTransform[slots.FileOne.value.replace(/[^abcdefgh]/, '').substr(0, 1)],
-            fieldTransform[slots.RankOne.value.replace(/[^12345678]/, '')],
+            fieldTransform[slots.FileOne.value.substr(0, 1)],
+            fieldTransform[slots.RankOne.value],
         ],
         to: [
-            fieldTransform[slots.FileTwo.value.replace(/[^abcdefgh]/, '').substr(0, 1)],
-            fieldTransform[slots.RankTwo.value.replace(/[^12345678]/, '')],
+            fieldTransform[slots.FileTwo.value.substr(0, 1)],
+            fieldTransform[slots.RankTwo.value],
         ],
     };
 
     post(host, 80, '/chess/move.php', data);
 
-    console.log(data);
+    if (slots.FileTwo.value == 'hotel' && slots.RankTwo.value == 5) {
+        return callback(buildSpeechletResponse(intent.name, speechOutput + ' This results in a checkmate. Congratulations.', '', true));
+    }
 
     return callback(buildSpeechletResponse(intent.name, speechOutput, '', false));
 }
